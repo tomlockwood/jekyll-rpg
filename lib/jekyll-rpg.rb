@@ -27,8 +27,10 @@ module JekyllRPG
     # On the site, build a full graph of references between collection pages
     collection_keys.each do |collection|
       site.collections[collection].docs.each do |doc|
-        doc.to_s.scan(/(?<=[^!])\[.*?\]\(\/.*?\/.*?\)/).each do |reference|
-          add_reference(site, doc, reference)
+        unless doc.data['dm'] && !site.data['dm_mode']
+          doc.to_s.scan(/(?<=[^!])\[.*?\]\(\/.*?\/.*?\)/).each do |reference|
+            add_reference(site, doc, reference)
+          end
         end
       end
     end
