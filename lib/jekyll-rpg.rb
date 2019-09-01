@@ -9,8 +9,11 @@ module JekyllRPG
   def self.add_reference(site, doc, reference)
     referent_collection = doc.collection.label
     referent_page = doc.data['slug']
+
+    # Find part of markdown link that represents the collection and item
     referenced_collection = reference[/(?<=\/).*(?=\/)/]
     referenced_page = reference[/(?<=\/)(?:(?!\/).)*?(?=\))/]
+
     @references = {} if @references.nil?
 
     @references[referenced_collection] = {} unless @references.key?(referenced_collection)
@@ -37,6 +40,7 @@ module JekyllRPG
 
     site.data['graph'] = @references
 
+
     # For each collection page, add where it is referenced
     collection_keys.each do |collection|
       site.collections[collection].docs.each do |doc|
@@ -54,6 +58,25 @@ module JekyllRPG
         end
         doc.data['referenced_by'] = slugs
       end
+    end
+
+    # For each reference, if a page does not exist, add it to a not_referenced variable
+    site.data['not_referenced'] = []
+
+    @references.each do |collection|
+        collection_name = collection[0]
+        collection[1].each do |item|
+          item_hash = {}
+          item_hash['url'] = "#{site.config['url']}/#{collection_name}/#{item[0]}"
+          item_hash['collection'] = collection_name
+          item_hash['slug'] = item[0]
+          item_hash['referenced_by'] = item[1]
+          if site.collections[collection_name].nil?
+            site.data['not_referenced'].append(item_hash)
+          elsif site.collections[collection_name].docs.find { |doc| doc.data['slug'] == item[0] }.nil?
+            site.data['not_referenced'].append(item_hash)
+          end
+        end
     end
   end
 end
