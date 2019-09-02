@@ -52,7 +52,7 @@ module JekyllRPG
           @references[collection][doc.data['slug']].each do |referent|
             referent_collection = referent[0]
             referent[1].each do |x|
-              slugs[referent_collection].append("[#{x[1]}](/#{referent_collection}/#{x[0]})")
+              slugs[referent_collection].push("[#{x[1]}](/#{referent_collection}/#{x[0]})")
             end
           end
         end
@@ -72,9 +72,9 @@ module JekyllRPG
           item_hash['slug'] = item[0]
           item_hash['referenced_by'] = item[1]
           if site.collections[collection_name].nil?
-            site.data['not_referenced'].append(item_hash)
+            site.data['not_referenced'].push(item_hash)
           elsif site.collections[collection_name].docs.find { |doc| doc.data['slug'] == item[0] }.nil?
-            site.data['not_referenced'].append(item_hash)
+            site.data['not_referenced'].push(item_hash)
           end
         end
     end
