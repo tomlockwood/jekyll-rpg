@@ -25,6 +25,7 @@ module JekyllRPG
 
   # Bi-directional page links
   Jekyll::Hooks.register :site, :post_read do |site|
+    # Don't include references on posts collection
     collection_keys = site.collections.keys - ["posts"]
 
     # On the site, build a full graph of references between collection pages
@@ -44,6 +45,7 @@ module JekyllRPG
     # For each collection page, add where it is referenced
     collection_keys.each do |collection|
       site.collections[collection].docs.each do |doc|
+        # TODO - set the pages as unpublished if in DM mode
         slugs = {}
         collection_keys.each do |add_keys|
           slugs[add_keys] = []
@@ -59,6 +61,8 @@ module JekyllRPG
         doc.data['referenced_by'] = slugs
       end
     end
+
+    # TODO - Conditionally render referents based on site -> collection -> page preference
 
     # For each reference, if a page does not exist, add it to a not_referenced variable
     site.data['not_referenced'] = []
