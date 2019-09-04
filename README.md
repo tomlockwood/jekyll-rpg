@@ -22,8 +22,8 @@ This will create a table like this:
 
 ## Referenced By:
 
-**Collection** | **Links**
---------------------------
-**Gods**       | - [Bethany](/#)
---------------------------
-**History**    | - [Slaying of Bethany](/#)
+|**Collection** | **Links**                  |
+|---------------|----------------------------|
+|**Gods**       | - [Bethany](/#)            |
+|---------------|----------------------------|
+|**History**    | - [Slaying of Bethany](/#) |
