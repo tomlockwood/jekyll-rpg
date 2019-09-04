@@ -25,5 +25,4 @@ This will create a table like this:
 |**Collection** | **Links**                  |
 |---------------|----------------------------|
 |**Gods**       | - [Bethany](/#)            |
-|---------------|----------------------------|
 |**History**    | - [Slaying of Bethany](/#) |
