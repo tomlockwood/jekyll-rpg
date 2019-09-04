@@ -13,6 +13,6 @@ Gem::Specification.new do |s|
     'https://rubygems.org/gems/jekyll-rpg'
   s.license = 'MIT'
 
-  s.add_dependency "jekyll"
+  s.add_dependency "jekyll", "3.8.6"
   s.add_dependency "pry"
 end

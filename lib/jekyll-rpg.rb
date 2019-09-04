@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'jekyll'
+require 'jekyll', '3.8.6'
 require 'pry'
 
 module JekyllRPG
