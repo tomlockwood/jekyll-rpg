@@ -4,7 +4,7 @@
 
 A jekyll plugin to help DMs manage campaign information.
 
-Reads markdown (for example `[Bethany](/gods/bethany)`) links to build a map of relationships between things that are in collections.
+Reads markdown links (for example `[Bethany](/gods/bethany)`) to build a map of relationships between things that are in collections.
 
 Writes a table of where a thing is referenced to every thing's page, if desired.  Allows for quick navigation.
 
@@ -49,7 +49,7 @@ At a site config level, you can set `dm_mode` if this is `true`, only then will 
 
 ```
 {% if site.dm_mode %}
-Hidden
+Players cannot see this content
 {% endif %}
 ```
 
@@ -64,6 +64,7 @@ In future I intend that to highlight and be a bit less clunky.
 ### On the site:
 
 `graph` is a nested series of hashes that represents the relationship between documents
+
 `broken_links` is an array of hashes representing a markdown link pointing to a non-existent page
 
 ## Known issues/bug roadmap
