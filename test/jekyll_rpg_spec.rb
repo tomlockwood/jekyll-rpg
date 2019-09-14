@@ -37,18 +37,19 @@ describe 'Make Jekyll-RPG site' do
     end
 
     context 'with refs at a site level' do
-        let(:refs) { true }
+        let(:refs)      { true }
+        let(:bethany)   { site_doc_named('Bethany').content }
 
         it 'puts a table with references on the documents' do
-            expect(site_doc_named('Bethany').content).to include('<table>')
+            expect(bethany).to include('<table>')
         end
 
         it 'puts a link to the referencing document on the document' do
-            expect(site_doc_named('Bethany').content).to include('<a href="/history/slaying_of_bethany">Slaying of Bethany</a>')
+            expect(bethany).to include('<a href="/history/slaying_of_bethany">Slaying of Bethany</a>')
         end
 
         it 'does not include a collection row for a collection that has no refs to the doc' do
-            expect(site_doc_named('Bethany').content).not_to include('Gods')
+            expect(bethany).not_to include('Gods')
         end
     end
 end

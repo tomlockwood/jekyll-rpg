@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    =
     'https://github.com/tomlockwood/jekyll-rpg'
   s.license = 'MIT'
+  s.required_ruby_version = '>= 2.6.1'
 
   s.add_dependency "jekyll", "~> 3"
 end
