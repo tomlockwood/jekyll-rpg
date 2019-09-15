@@ -14,5 +14,5 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.required_ruby_version = '>= 2.6.1'
 
-  s.add_dependency "jekyll", "~> 3"
+  s.add_dependency 'jekyll', '~> 3'
 end
