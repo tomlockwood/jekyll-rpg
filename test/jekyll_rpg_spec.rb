@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'jekyll'
-require 'pry'
 
 describe 'Make Jekyll-RPG site' do
   let(:dm_mode) { false }
@@ -34,7 +33,7 @@ describe 'Make Jekyll-RPG site' do
     end
 
     it 'generates a list of broken links' do
-      expect(@site.data['broken_links'].find { |link| link['url'] == '/gods/bruce' }['slug']).to eq('bruce')
+      expect(@site.data['broken_links'].find { |link| link['reference_link'] == '[Bruce](/gods/bruce)' }['reference_slug']).to eq('bruce')
     end
   end
 

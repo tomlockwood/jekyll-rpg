@@ -36,46 +36,44 @@ module JekyllRPG
       # For each collection page, add where it is referenced
       @collection_keys.each do |collection|
         site.collections[collection].docs.each do |doc|
-          slugs = {}
-          @collection_keys.each do |add_keys|
-            slugs[add_keys] = []
+          page_refs = {}
+
+          # Get the information for every page the current doc is referenced in
+          # And push links to an array that represents the collections of those pages
+          referenced_in(collection, doc.data['slug'] ).each do |reference|
+            page_refs[reference.collection] = [] unless page_refs.key?(reference.collection)
+            page_refs[reference.collection].push(reference.markdown_link)
           end
-          unless @references[collection].nil? || @references[collection][doc.data['slug']].nil?
-            @references[collection][doc.data['slug']].each do |referent|
-              referent_collection = referent[0]
-              referent[1].each do |x|
-                slugs[referent_collection].push("[#{x[1]}](/#{referent_collection}/#{x[0]})")
-              end
-            end
+
+          # Make sure links in collections are unique
+          page_refs.each do |k,v|
+            page_refs[k] = v.uniq
           end
-          doc.data['referenced_by'] = slugs
-          if doc.data.key?('refs')
-            refs_table_required = doc.data['refs']
-          elsif site.config['collections'][doc.collection.label].key?('refs')
-            refs_table_required = site.config['collections'][doc.collection.label]['refs']
-          elsif site.config.key?('refs')
-            refs_table_required = site.config['refs']
-          end
-          if refs_table_required
+
+          # Put the reference data on the doc
+          doc.data['referenced_by'] = page_refs
+
+          # If the references table option is configured, append the table
+          if refs_table_required(doc)
             doc.content = doc.content + refs_table(doc.data['referenced_by'])
           end
         end
       end
 
+      #print broken_links
+
       # Create list of broken links
-      @references.each do |collection|
-        collection_name = collection[0]
-        collection[1].each do |item|
-          item_hash = {
-            'url' => "#{site.config['url']}/#{collection_name}/#{item[0]}",
-            'collection' => collection_name,
-            'slug' => item[0],
-            'referenced_by' => item[1]
-          }
-          if page_missing(collection_name, item[0])
-            @broken_links.push(item_hash)
-          end
-        end
+      unwritten_pages.each do |edge|
+        @broken_links.push({
+          'reference_name' => edge['reference'].name,
+          'reference_collection' => edge['reference'].collection,
+          'reference_slug' => edge['reference'].slug,
+          'reference_link' => edge['reference'].markdown_link,
+          'referent_name' => edge['referent'].name,
+          'referent_collection' => edge['referent'].collection,
+          'referent_slug' => edge['referent'].slug,
+          'referent_link' => edge['referent'].markdown_link,
+        })
       end
     end
 
@@ -107,14 +105,36 @@ module JekyllRPG
         name = find_page(referenced_collection, referenced_slug).data['name']
       end
       {
-        referent: referent,
-        reference: CollectionPage.new(
+        'referent' => referent,
+        'reference' => CollectionPage.new(
           name,
           referenced_collection,
           referenced_slug,
           written
         )
       }
+    end
+
+    def referenced_in(collection, slug)
+      @graph.select {
+        |edge| edge['reference'].collection == collection && edge['reference'].slug == slug
+      }.map { |edge| edge['referent'] }
+    end
+
+    def unwritten_pages
+      @graph.select {
+        |edge| !edge['reference'].written
+      }
+    end
+
+    def refs_table_required(doc)
+      if doc.data.key?('refs')
+        doc.data['refs']
+      elsif @site.config['collections'][doc.collection.label].key?('refs')
+        @site.config['collections'][doc.collection.label]['refs']
+      elsif @site.config.key?('refs')
+        @site.config['refs']
+      end
     end
 
     def add_reference(doc, reference)
@@ -152,9 +172,6 @@ module JekyllRPG
     def refs_rows(refs)
       row = ''
       refs.each do |reference|
-        # Don't add the collection name unless there's a reference
-        next if reference[1].count == 0
-
         row += <<~ROW
           <tr>
             <td markdown="span"><b> #{reference[0].capitalize} </b></td>

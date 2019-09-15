@@ -8,8 +8,6 @@ module JekyllRPG
   Jekyll::Hooks.register :site, :post_read do |site|
     ref = References.new(site)
 
-    print ref.graph
-
     site.data['graph'] = ref.references
 
     site.data['broken_links'] = ref.broken_links
