@@ -58,20 +58,9 @@ module JekyllRPG
         end
       end
 
-      #print broken_links
-
       # Create list of broken links
       unwritten_pages.each do |edge|
-        @broken_links.push({
-          'reference_name' => edge['reference'].name,
-          'reference_collection' => edge['reference'].collection,
-          'reference_slug' => edge['reference'].slug,
-          'reference_link' => edge['reference'].markdown_link,
-          'referent_name' => edge['referent'].name,
-          'referent_collection' => edge['referent'].collection,
-          'referent_slug' => edge['referent'].slug,
-          'referent_link' => edge['referent'].markdown_link,
-        })
+        @broken_links.push(edge_hash(edge))
       end
     end
 
@@ -133,6 +122,23 @@ module JekyllRPG
       elsif @site.config.key?('refs')
         @site.config['refs']
       end
+    end
+
+    def edge_hash(edge)
+      {
+        'reference_name' => edge['reference'].name,
+        'reference_collection' => edge['reference'].collection,
+        'reference_slug' => edge['reference'].slug,
+        'reference_link' => edge['reference'].markdown_link,
+        'referent_name' => edge['referent'].name,
+        'referent_collection' => edge['referent'].collection,
+        'referent_slug' => edge['referent'].slug,
+        'referent_link' => edge['referent'].markdown_link,
+      }
+    end
+
+    def hashed_graph
+      @graph.map { |edge| edge_hash(edge) }
     end
 
     def refs_table(refs)
