@@ -4,11 +4,10 @@ require 'collection_page'
 
 module JekyllRPG
   class References
-    attr_accessor :collection_keys, :references, :broken_links, :graph
+    attr_accessor :collection_keys, :broken_links, :graph
 
     def initialize(site)
       @site = site
-      @references = {}
       @graph = []
       @broken_links = []
       @collection_keys = @site.collections.keys - ['posts']
@@ -27,7 +26,6 @@ module JekyllRPG
             )
             markdown_links(doc).each do |reference|
               @graph.push(edge(referent, reference))
-              add_reference(doc, reference)
             end
           end
         end
@@ -135,20 +133,6 @@ module JekyllRPG
       elsif @site.config.key?('refs')
         @site.config['refs']
       end
-    end
-
-    def add_reference(doc, reference)
-      referent_collection = doc.collection.label
-      referent_page = doc.data['slug']
-
-      # Find part of markdown link that represents the collection and item
-      referenced_name, referenced_collection, referenced_page = link_components(reference)
-
-      @references[referenced_collection] = {} unless @references.key?(referenced_collection)
-      @references[referenced_collection][referenced_page] = {} unless @references[referenced_collection].key?(referenced_page)
-      @references[referenced_collection][referenced_page][referent_collection] = {} unless @references[referenced_collection][referenced_page].key?(referent_collection)
-
-      @references[referenced_collection][referenced_page][referent_collection][referent_page] = doc.data['name']
     end
 
     def refs_table(refs)

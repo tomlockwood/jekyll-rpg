@@ -25,7 +25,7 @@ describe 'Make Jekyll-RPG site' do
 
   context 'with defaults' do
     it 'makes a graph with nodes representing links between pages' do
-      expect(@site.data['graph']['gods']['bethany']['history']['slaying_of_bethany']).to eq('Slaying of Bethany')
+      expect(@site.data['graph'][0]['reference'].name).to eq('Slaying of Bethany')
     end
 
     it 'puts the references on documents' do
