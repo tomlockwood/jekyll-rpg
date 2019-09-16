@@ -3,6 +3,7 @@
 require 'collection_page'
 
 module JekyllRPG
+  # References within Jekyll Collections
   class References
     attr_accessor :collection_keys, :broken_links, :graph
 
