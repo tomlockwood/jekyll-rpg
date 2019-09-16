@@ -54,7 +54,9 @@ describe 'Make Jekyll-RPG site' do
     end
 
     it 'puts a link to the referencing document on the document' do
-      expect(bethany).to include('<a href="/history/slaying_of_bethany">Slaying of Bethany</a>')
+      expect(bethany).to include(
+        '<a href="/history/slaying_of_bethany">Slaying of Bethany</a>'
+      )
     end
 
     it 'does not include a collection row for a collection that has no refs' do

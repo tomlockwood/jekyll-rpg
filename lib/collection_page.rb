@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module JekyllRPG
+  # Represents a document that may be in a Jekyll collection
   class CollectionPage
     attr_accessor :name, :collection, :slug, :written
 
