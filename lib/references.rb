@@ -64,24 +64,30 @@ module JekyllRPG
       end
     end
 
+    # Find all markdown links in document
+    # TODO - fails to find markdown link at very start of doc
+    # due to not finding any character that isn't an exclamation mark
     def markdown_links(doc)
       doc.to_s.scan(%r{(?<=[^!])\[.*?\]\(/.*?/.*?\)})
     end
 
     # returns link text, collection and slug
-    # [0](/1/2)
+    # [0](/1/2) - as a [0, 1, 2]
     def link_components(link)
       [link[%r{(?<=\[).*?(?=\])}], link[%r{(?<=/).*(?=/)}], link[%r{(?<=/)(?:(?!/).)*?(?=\))}]]
     end
 
+    # Find a document based on its collection and slug
     def find_page(collection, slug)
       @site.collections[collection].docs.find { |doc| doc.data['slug'] == slug }
     end
 
+    # Returns true if document cannot be found in collection
     def page_missing(collection, slug)
       @site.collections[collection].nil? || find_page(collection, slug).nil?
     end
 
+    # Returns a hash of two CollectionPages representing a graph edge
     def edge(referent, reference)
       referenced_name, referenced_collection, referenced_slug = link_components(reference)
       if page_missing(referenced_collection, referenced_slug)
@@ -102,18 +108,22 @@ module JekyllRPG
       }
     end
 
+    # Based on the graph, returns edges that a specific document is the referent of
     def referenced_in(collection, slug)
       @graph.select {
         |edge| edge['reference'].collection == collection && edge['reference'].slug == slug
       }.map { |edge| edge['referent'] }
     end
 
+    # Based on the graph, returns documents that are referenced, but do not exist yet
     def unwritten_pages
       @graph.select {
         |edge| !edge['reference'].written
       }
     end
 
+    # Determines if refs table is required based on document,
+    # then collection, then site
     def refs_table_required(doc)
       if doc.data.key?('refs')
         doc.data['refs']
@@ -124,6 +134,7 @@ module JekyllRPG
       end
     end
 
+    # Returns an easily accessible hash representing an edge for Jekyll purposes
     def edge_hash(edge)
       {
         'reference_name' => edge['reference'].name,
@@ -137,9 +148,14 @@ module JekyllRPG
       }
     end
 
+    # Returns a graph made up of hashed edges
     def hashed_graph
       @graph.map { |edge| edge_hash(edge) }
     end
+
+    # The following three functions return a HTML table
+    # That for a specific document shows the documents that
+    # reference it
 
     def refs_table(refs)
       table = <<~TABLE
