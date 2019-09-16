@@ -38,13 +38,13 @@ module JekyllRPG
 
           # Get the information for every page the current doc is referenced in
           # And push links to an array that represents the collections of those pages
-          referenced_in(collection, doc.data['slug'] ).each do |reference|
+          referenced_in(collection, doc.data['slug']).each do |reference|
             page_refs[reference.collection] = [] unless page_refs.key?(reference.collection)
             page_refs[reference.collection].push(reference.markdown_link)
           end
 
           # Make sure links in collections are unique
-          page_refs.each do |k,v|
+          page_refs.each do |k, v|
             page_refs[k] = v.uniq
           end
 
@@ -74,7 +74,7 @@ module JekyllRPG
     # returns link text, collection and slug
     # [0](/1/2) - as a [0, 1, 2]
     def link_components(link)
-      [link[%r{(?<=\[).*?(?=\])}], link[%r{(?<=/).*(?=/)}], link[%r{(?<=/)(?:(?!/).)*?(?=\))}]]
+      [link[/(?<=\[).*?(?=\])/], link[%r{(?<=/).*(?=/)}], link[%r{(?<=/)(?:(?!/).)*?(?=\))}]]
     end
 
     # Find a document based on its collection and slug
@@ -110,16 +110,16 @@ module JekyllRPG
 
     # Based on the graph, returns edges that a specific document is the referent of
     def referenced_in(collection, slug)
-      @graph.select {
-        |edge| edge['reference'].collection == collection && edge['reference'].slug == slug
-      }.map { |edge| edge['referent'] }
+      @graph.select do |edge|
+        edge['reference'].collection == collection && edge['reference'].slug == slug
+      end.map { |edge| edge['referent'] }
     end
 
     # Based on the graph, returns documents that are referenced, but do not exist yet
     def unwritten_pages
-      @graph.select {
-        |edge| !edge['reference'].written
-      }
+      @graph.reject do |edge|
+        edge['reference'].written
+      end
     end
 
     # Determines if refs table is required based on document,
@@ -144,7 +144,7 @@ module JekyllRPG
         'referent_name' => edge['referent'].name,
         'referent_collection' => edge['referent'].collection,
         'referent_slug' => edge['referent'].slug,
-        'referent_link' => edge['referent'].markdown_link,
+        'referent_link' => edge['referent'].markdown_link
       }
     end
 

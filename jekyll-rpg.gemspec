@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
     'lib/references.rb',
     'lib/collection_page.rb'
   ]
-  s.homepage    =
+  s.homepage =
     'https://github.com/tomlockwood/jekyll-rpg'
   s.license = 'MIT'
   s.required_ruby_version = '>= 2.6.1'
