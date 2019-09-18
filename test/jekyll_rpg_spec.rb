@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'jekyll'
+require_relative 'spec_helper'
 
 describe 'Make Jekyll-RPG site' do
   let(:dm_mode) { false }
