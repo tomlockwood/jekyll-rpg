@@ -21,7 +21,8 @@ describe 'Make Jekyll-RPG site' do
       }
     )
     @site = Jekyll::Site.new(@config)
-    @site.process
+    @site.reset
+    @site.read
   end
 
   context 'with defaults' do
@@ -56,7 +57,7 @@ describe 'Make Jekyll-RPG site' do
 
     it 'puts a link to the referencing document on the document' do
       expect(bethany).to include(
-        '<a href="/history/slaying_of_bethany">Slaying of Bethany</a>'
+        '[Slaying of Bethany](/history/slaying_of_bethany)'
       )
     end
 
