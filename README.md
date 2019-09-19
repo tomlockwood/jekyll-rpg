@@ -71,7 +71,7 @@ In future I intend that to highlight and be a bit less clunky.
 
 * If the first thing on a document is a markdown link, it will not be detected for the `graph` or references.
 * `dm: true` does not prevent selection in collections of a document.
-* Code needs to be better organized into subclasses.
+* Code needs to be better organized into classes.
 
 ## Feature roadmap
 
