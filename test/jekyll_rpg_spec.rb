@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'jekyll'
+require_relative 'spec_helper'
 
 describe 'Make Jekyll-RPG site' do
   let(:dm_mode) { false }
@@ -20,20 +21,39 @@ describe 'Make Jekyll-RPG site' do
       }
     )
     @site = Jekyll::Site.new(@config)
-    @site.process
+    @site.reset
+    @site.read
   end
 
   context 'with defaults' do
     it 'makes a graph with nodes representing links between pages' do
-      expect(@site.data['graph'][0]['reference'].name).to eq('Slaying of Bethany')
+      expect(
+        @site.data['graph'][0]['reference_name']
+      ).to eq('Slaying of Bethany')
     end
 
     it 'puts the references on documents' do
-      expect(site_doc_named('Bethany').data['referenced_by']['history']).to eq ['[Slaying of Bethany](/history/slaying_of_bethany)']
+      expect(
+        site_doc_named('Bethany').data['referenced_by']['history']
+      ).to eq ['[Slaying of Bethany](/history/slaying_of_bethany)']
+    end
+
+    it 'does not show references from DM material' do
+      expect(
+        site_doc_named('Bethany').data['referenced_by']['gods']
+      ).to eq nil
+    end
+
+    it 'does not publish DM material' do
+      expect(site_doc_named('Nega Bruce').data['published']).to eq false
     end
 
     it 'generates a list of broken links' do
-      expect(@site.data['broken_links'].find { |link| link['reference_link'] == '[Bruce](/gods/bruce)' }['reference_slug']).to eq('bruce')
+      expect(
+        @site.data['broken_links'].find do |link|
+          link['reference_link'] == '[Bruce](/gods/bruce)'
+        end['reference_slug']
+      ).to eq('bruce')
     end
   end
 
@@ -46,11 +66,27 @@ describe 'Make Jekyll-RPG site' do
     end
 
     it 'puts a link to the referencing document on the document' do
-      expect(bethany).to include('<a href="/history/slaying_of_bethany">Slaying of Bethany</a>')
+      expect(bethany).to include(
+        '[Slaying of Bethany](/history/slaying_of_bethany)'
+      )
     end
 
-    it 'does not include a collection row for a collection that has no refs to the doc' do
+    it 'does not include a collection row for a collection that has no refs' do
       expect(bethany).not_to include('Gods')
+    end
+  end
+
+  context 'with dm_mode set to true' do
+    let(:dm_mode) { true }
+
+    it 'does shows references from DM material' do
+      expect(
+        site_doc_named('Bethany').data['referenced_by']['gods']
+      ).to eq ['[Nega Bruce](/gods/nega_bruce)']
+    end
+
+    it 'does not block publishing dm material' do
+      expect(site_doc_named('Nega Bruce').data['published']).not_to eq false
     end
   end
 end

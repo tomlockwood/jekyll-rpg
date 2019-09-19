@@ -3,12 +3,13 @@
 require 'jekyll'
 require_relative 'references'
 
+# Generates reference information for Jekyll Site
 module JekyllRPG
   # Bi-directional page links
   Jekyll::Hooks.register :site, :post_read do |site|
     ref = References.new(site)
 
-    site.data['graph'] = ref.graph
+    site.data['graph'] = ref.hashed_graph
 
     site.data['broken_links'] = ref.broken_links
   end
