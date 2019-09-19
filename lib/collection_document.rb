@@ -2,7 +2,7 @@
 
 module JekyllRPG
   # Represents a document that may be in a Jekyll collection
-  class CollectionPage
+  class CollectionDocument
     attr_accessor :name, :collection, :slug, :written
 
     def initialize(name, collection, slug, written)

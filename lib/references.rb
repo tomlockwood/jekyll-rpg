@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'collection_page'
+require 'collection_document'
 
 module JekyllRPG
   # References within Jekyll Collections
@@ -19,7 +19,7 @@ module JekyllRPG
           if doc.data['dm'] && !@site.config['dm_mode']
             doc.data['published'] = false
           else
-            referent = CollectionPage.new(
+            referent = CollectionDocument.new(
               doc.data['name'],
               doc.collection.label,
               doc.data['slug'],
@@ -88,7 +88,7 @@ module JekyllRPG
       @site.collections[collection].nil? || find_page(collection, slug).nil?
     end
 
-    # Returns a hash of two CollectionPages representing a graph edge
+    # Returns a hash of two CollectionDocuments representing a graph edge
     def edge(referent, reference)
       referenced_name, referenced_collection, referenced_slug = link_components(reference)
       if page_missing(referenced_collection, referenced_slug)
@@ -100,7 +100,7 @@ module JekyllRPG
       end
       {
         'referent' => referent,
-        'reference' => CollectionPage.new(
+        'reference' => CollectionDocument.new(
           name,
           referenced_collection,
           referenced_slug,

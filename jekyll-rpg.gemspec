@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.files       = [
     'lib/jekyll-rpg.rb',
     'lib/references.rb',
-    'lib/collection_page.rb'
+    'lib/collection_document.rb'
   ]
   s.homepage =
     'https://github.com/tomlockwood/jekyll-rpg'
