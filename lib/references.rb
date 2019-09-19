@@ -35,7 +35,7 @@ module JekyllRPG
 
       # For each collection page, add where it is referenced
       @collection_keys.each do |collection|
-        site.collections[collection].docs.each do |doc|
+        @site.collections[collection].docs.each do |doc|
           page_refs = {}
 
           # Get the information for every page the current doc is referenced in
