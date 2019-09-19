@@ -3,6 +3,7 @@
 require 'jekyll'
 require_relative 'spec_helper'
 
+# End-to-end tests via Jekyll
 describe 'Make Jekyll-RPG site' do
   let(:dm_mode) { false }
   let(:refs)    { false }
