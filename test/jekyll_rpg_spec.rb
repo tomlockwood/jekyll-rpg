@@ -44,6 +44,10 @@ describe 'Make Jekyll-RPG site' do
       ).to eq nil
     end
 
+    it 'does not publish DM material' do
+      expect(site_doc_named('Nega Bruce').data['published']).to eq false
+    end
+
     it 'generates a list of broken links' do
       expect(
         @site.data['broken_links'].find do |link|
