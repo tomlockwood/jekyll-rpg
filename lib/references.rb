@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'collection_page'
+require 'pry'
 
 module JekyllRPG
   # References within Jekyll Collections
@@ -16,7 +17,7 @@ module JekyllRPG
       # Parse references from markdown links
       @collection_keys.each do |collection|
         @site.collections[collection].docs.each do |doc|
-          if doc.data['dm'] && !@site.data['dm_mode']
+          if doc.data['dm'] && !@site.config['dm_mode']
             doc.data['published'] = false
           else
             referent = CollectionPage.new(

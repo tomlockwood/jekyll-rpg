@@ -38,6 +38,12 @@ describe 'Make Jekyll-RPG site' do
       ).to eq ['[Slaying of Bethany](/history/slaying_of_bethany)']
     end
 
+    it 'does not show references from DM material' do
+      expect(
+        site_doc_named('Bethany').data['referenced_by']['gods']
+      ).to eq nil
+    end
+
     it 'generates a list of broken links' do
       expect(
         @site.data['broken_links'].find do |link|
@@ -63,6 +69,17 @@ describe 'Make Jekyll-RPG site' do
 
     it 'does not include a collection row for a collection that has no refs' do
       expect(bethany).not_to include('Gods')
+    end
+  end
+
+  context 'with dm_mode set to true' do
+    let(:dm_mode) { true }
+
+    it 'does shows references from DM material' do
+      print @site.data['dm_mode']
+      expect(
+        site_doc_named('Bethany').data['referenced_by']['gods']
+      ).to eq ['[Nega Bruce](/gods/nega_bruce)']
     end
   end
 end

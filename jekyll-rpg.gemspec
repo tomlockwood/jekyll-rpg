@@ -19,5 +19,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.6.1'
 
   s.add_dependency 'jekyll', '~> 3'
+  s.add_development_dependency 'pry'
   s.add_development_dependency 'rspec'
 end
