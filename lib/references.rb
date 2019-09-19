@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'collection_page'
-require 'pry'
 
 module JekyllRPG
   # References within Jekyll Collections

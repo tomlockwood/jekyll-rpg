@@ -1,2 +1,2 @@
-temp/
-.sass-cache/
+Gemfile.lock
+*.gem
