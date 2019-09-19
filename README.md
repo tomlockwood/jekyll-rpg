@@ -71,13 +71,13 @@ In future I intend that to highlight and be a bit less clunky.
 
 * If the first thing on a document is a markdown link, it will not be detected for the `graph` or references.
 * `dm: true` does not prevent selection in collections of a document.
-* Code style/quality is not great. Tests needed.
+* Code needs to be better organized into subclasses.
 
 ## Feature roadmap
 
 * Represent relationship between geographical locations in a hierarchical way for easy navigation.
 * Make a DM block filter and clearly highlight DM only content in boxes or similar.
-* Make references table more customizeable.
+* Make references table more customizeable and potentially even a template-able thing.
 
 ## Development
 
