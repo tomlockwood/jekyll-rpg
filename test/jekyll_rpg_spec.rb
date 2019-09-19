@@ -80,10 +80,13 @@ describe 'Make Jekyll-RPG site' do
     let(:dm_mode) { true }
 
     it 'does shows references from DM material' do
-      print @site.data['dm_mode']
       expect(
         site_doc_named('Bethany').data['referenced_by']['gods']
       ).to eq ['[Nega Bruce](/gods/nega_bruce)']
+    end
+
+    it 'does not block publishing dm material' do
+      expect(site_doc_named('Nega Bruce').data['published']).not_to eq false
     end
   end
 end
