@@ -21,17 +21,17 @@ module JekyllRPG
       @collection = link[%r{(?<=/).*(?=/)}]
       @slug = link[%r{(?<=/)(?:(?!/).)*?(?=\))}]
       @written = document_exists(site).nil?
-      @name = @written ? find_page(site).data['name'] : link[/(?<=\[).*?(?=\])/]
+      @name = @written ? find_document(site).data['name'] : link[/(?<=\[).*?(?=\])/]
       self
     end
 
     # Checks whether document exists in a site
     def document_exists(site)
-      site.collections[@collection].nil? || find_page(site).nil?
+      site.collections[@collection].nil? || find_document(site).nil?
     end
 
     # Find a document based on its collection and slug
-    def find_page(site)
+    def find_document(site)
       site.collections[@collection].docs.find { |doc| doc.data['slug'] == @slug }
     end
 
