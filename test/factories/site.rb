@@ -23,7 +23,8 @@ FactoryBot.define do
         theme: theme,
         dm_mode: dm_mode,
         refs: refs,
-        collections: collections)
+        collections: collections
+      )
       Jekyll::Site.new(config)
     end
 

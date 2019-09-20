@@ -57,7 +57,9 @@ module JekyllRPG
     end
 
     def collection_documents
-      @collection_keys.flat_map { |collection| @site.collections[collection].docs }
+      @collection_keys.flat_map do |collection|
+        @site.collections[collection].docs
+      end
     end
 
     # Find all markdown links in document

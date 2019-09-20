@@ -31,7 +31,7 @@ module JekyllRPG
       slug = doc.data['slug']
       @edges.select do |edge|
         edge.reference.collection == collection && edge.reference.slug == slug
-      end.map { |edge| edge.referent }
+      end.map(&:referent)
     end
 
     # Based on the graph, returns documents that are referenced, but do not exist yet
@@ -42,7 +42,7 @@ module JekyllRPG
     end
 
     def hash
-      @edges.map { |edge| edge.hash }
+      @edges.map(&:hash)
     end
   end
 end
