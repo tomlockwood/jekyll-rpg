@@ -37,6 +37,14 @@ describe 'Make Jekyll-RPG site' do
         end['reference_slug']
       ).to eq('bruce')
     end
+
+    it 'does not include pages that exist as broken links' do
+      expect(
+        site.jekyll.data['broken_links'].find do |link|
+          link['reference_link'] == '[Bethany](/gods/bethany)'
+        end
+      ).to be nil
+    end
   end
 
   context 'with refs at a site level' do

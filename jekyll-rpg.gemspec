@@ -2,16 +2,17 @@
 
 Gem::Specification.new do |s|
   s.name        = 'jekyll-rpg'
-  s.version     = '0.0.4'
-  s.date        = '2019-09-19'
+  s.version     = '0.0.5'
+  s.date        = '2019-09-20'
   s.summary     = 'Jekyll plugin for managing RPG information for DMs'
   s.description = ''
   s.authors     = ['Tom Lockwood']
   s.email       = 'tom@lockwood.dev'
   s.files       = [
+    'lib/collection_document.rb',
+    'lib/graph.rb',
     'lib/jekyll-rpg.rb',
-    'lib/references.rb',
-    'lib/collection_document.rb'
+    'lib/references.rb'
   ]
   s.homepage =
     'https://github.com/tomlockwood/jekyll-rpg'

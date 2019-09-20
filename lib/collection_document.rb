@@ -20,14 +20,14 @@ module JekyllRPG
     def extract_markdown(site, link)
       @collection = link[%r{(?<=/).*(?=/)}]
       @slug = link[%r{(?<=/)(?:(?!/).)*?(?=\))}]
-      @written = document_exists(site).nil?
+      @written = document_exists(site)
       @name = @written ? find_document(site).data['name'] : link[/(?<=\[).*?(?=\])/]
       self
     end
 
     # Checks whether document exists in a site
     def document_exists(site)
-      site.collections[@collection].nil? || find_document(site).nil?
+      !site.collections[@collection].nil? && !find_document(site).nil?
     end
 
     # Find a document based on its collection and slug
