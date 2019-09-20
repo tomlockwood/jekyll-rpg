@@ -10,8 +10,10 @@ Gem::Specification.new do |s|
   s.email       = 'tom@lockwood.dev'
   s.files       = [
     'lib/collection_document.rb',
+    'lib/edge.rb',
     'lib/graph.rb',
     'lib/jekyll-rpg.rb',
+    'lib/reference_table.rb',
     'lib/references.rb'
   ]
   s.homepage =

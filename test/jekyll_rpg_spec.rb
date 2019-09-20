@@ -10,7 +10,7 @@ describe 'Make Jekyll-RPG site' do
   context 'with defaults' do
     it 'makes a graph with nodes representing links between pages' do
       expect(
-        site.jekyll.data['graph'][0]['reference_name']
+        site.jekyll.data['graph'][0]['reference']['name']
       ).to eq('Slaying of Bethany')
     end
 
@@ -33,15 +33,15 @@ describe 'Make Jekyll-RPG site' do
     it 'generates a list of broken links' do
       expect(
         site.jekyll.data['broken_links'].find do |link|
-          link['reference_link'] == '[Bruce](/gods/bruce)'
-        end['reference_slug']
+          link['reference']['link'] == '[Bruce](/gods/bruce)'
+        end['reference']['slug']
       ).to eq('bruce')
     end
 
     it 'does not include pages that exist as broken links' do
       expect(
         site.jekyll.data['broken_links'].find do |link|
-          link['reference_link'] == '[Bethany](/gods/bethany)'
+          link['reference']['link'] == '[Bethany](/gods/bethany)'
         end
       ).to be nil
     end

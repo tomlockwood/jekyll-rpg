@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 module JekyllRPG
   # Represents a document that may be in a Jekyll collection
   class CollectionDocument
@@ -37,6 +35,15 @@ module JekyllRPG
 
     def markdown_link
       "[#{@name}](/#{@collection}/#{@slug})"
+    end
+
+    def hash
+      {
+        'name' => @name,
+        'collection' => @collection,
+        'slug' => @slug,
+        'link' => markdown_link
+      }
     end
   end
 end

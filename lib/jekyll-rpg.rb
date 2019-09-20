@@ -9,7 +9,7 @@ module JekyllRPG
   Jekyll::Hooks.register :site, :post_read do |site|
     ref = References.new(site)
 
-    site.data['graph'] = ref.hashed_graph
+    site.data['graph'] = ref.graph.hash
 
     site.data['broken_links'] = ref.broken_links
   end
