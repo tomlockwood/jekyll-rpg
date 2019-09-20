@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'collection_document'
+require 'pry'
 
 module JekyllRPG
   # References within Jekyll Collections
@@ -13,56 +14,67 @@ module JekyllRPG
       @broken_links = []
       @collection_keys = @site.collections.keys - ['posts']
 
-      # Parse references from markdown links
-      @collection_keys.each do |collection|
-        @site.collections[collection].docs.each do |doc|
-          if doc.data['dm'] && !@site.config['dm_mode']
-            doc.data['published'] = false
-          else
-            referent = CollectionDocument.new(
-              doc.data['name'],
-              doc.collection.label,
-              doc.data['slug'],
-              true
-            )
-            markdown_links(doc).each do |reference|
-              @graph.push(edge(referent, reference))
-            end
-          end
-        end
-      end
-
-      # For each collection page, add where it is referenced
-      @collection_keys.each do |collection|
-        @site.collections[collection].docs.each do |doc|
-          page_refs = {}
-
-          # Get the information for every page the current doc is referenced in
-          # And push links to an array that represents the collections of those pages
-          referenced_in(collection, doc.data['slug']).each do |reference|
-            page_refs[reference.collection] = [] unless page_refs.key?(reference.collection)
-            page_refs[reference.collection].push(reference.markdown_link)
-          end
-
-          # Make sure links in collections are unique
-          page_refs.each do |k, v|
-            page_refs[k] = v.uniq
-          end
-
-          # Put the reference data on the doc
-          doc.data['referenced_by'] = page_refs
-
-          # If the references table option is configured, append the table
-          if refs_table_required(doc)
-            doc.content = doc.content + refs_table(doc.data['referenced_by'])
-          end
-        end
-      end
+      reference_pass
+      referent_pass
 
       # Create list of broken links
       unwritten_pages.each do |edge|
         @broken_links.push(edge_hash(edge))
       end
+    end
+
+    # Generating data on how documents reference other documents
+    def reference_pass
+      # Parse references from markdown links
+      collection_documents.each do |doc|
+        # Do not publish or reference a page if the site is not in DM Mode
+        # And the page is marked as for dms
+        if doc.data['dm'] && !@site.config['dm_mode']
+          doc.data['published'] = false
+        else
+          referent = CollectionDocument.new(
+            doc.data['name'],
+            doc.collection.label,
+            doc.data['slug'],
+            true
+          )
+          markdown_links(doc).each do |reference|
+            @graph.push(edge(referent, reference))
+          end
+        end
+      end
+    end
+
+    # Generating data on how documents are referenced to
+    def referent_pass
+      # For each collection page, add where it is referenced
+      collection_documents.each do |doc|
+        page_refs = {}
+
+        # Get the information for every page the current doc is referenced in
+        # And push links to an array that represents the collections of those pages
+        referenced_in(doc.collection.label, doc.data['slug']).each do |reference|
+          page_refs[reference.collection] = [] unless page_refs.key?(reference.collection)
+          page_refs[reference.collection].push(reference.markdown_link)
+        end
+
+        # Make sure links in collections are unique
+        page_refs.each do |k, v|
+          page_refs[k] = v.uniq
+        end
+
+        # Put the reference data on the doc
+        doc.data['referenced_by'] = page_refs
+
+        # If the references table option is configured, append the table
+        if refs_table_required(doc)
+          doc.content = doc.content + refs_table(doc.data['referenced_by'])
+        end
+      end
+    end
+
+    def collection_documents
+      @collection_keys.flat_map { |collection| @site.collections[collection].docs }
     end
 
     # Find all markdown links in document
