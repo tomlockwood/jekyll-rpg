@@ -32,14 +32,10 @@ module JekyllRPG
         if doc.data['dm'] && !@site.config['dm_mode']
           doc.data['published'] = false
         else
-          referent = CollectionDocument.new(
-            doc.data['name'],
-            doc.collection.label,
-            doc.data['slug'],
-            true
-          )
-          markdown_links(doc).each do |reference|
-            @graph.push(edge(referent, reference))
+          referent = CollectionDocument.new.extract_doc(doc)
+          markdown_links(doc).each do |link|
+            reference = CollectionDocument.new.extract_markdown(@site, link)
+            @graph.push('referent' => referent, 'reference' => reference)
           end
         end
       end
@@ -53,7 +49,7 @@ module JekyllRPG
 
         # Get the information for every page the current doc is referenced in
         # And push links to an array that represents the collections of those pages
-        referenced_in(doc.collection.label, doc.data['slug']).each do |reference|
+        referenced_in(doc).each do |reference|
           page_refs[reference.collection] = [] unless page_refs.key?(reference.collection)
           page_refs[reference.collection].push(reference.markdown_link)
         end
@@ -84,45 +80,10 @@ module JekyllRPG
       doc.to_s.scan(%r{(?<=[^!])\[.*?\]\(/.*?/.*?\)})
     end
 
-    # returns link text, collection and slug
-    # [0](/1/2) - as a [0, 1, 2]
-    def link_components(link)
-      [link[/(?<=\[).*?(?=\])/], link[%r{(?<=/).*(?=/)}], link[%r{(?<=/)(?:(?!/).)*?(?=\))}]]
-    end
-
-    # Find a document based on its collection and slug
-    def find_page(collection, slug)
-      @site.collections[collection].docs.find { |doc| doc.data['slug'] == slug }
-    end
-
-    # Returns true if document cannot be found in collection
-    def page_missing(collection, slug)
-      @site.collections[collection].nil? || find_page(collection, slug).nil?
-    end
-
-    # Returns a hash of two CollectionDocuments representing a graph edge
-    def edge(referent, reference)
-      referenced_name, referenced_collection, referenced_slug = link_components(reference)
-      if page_missing(referenced_collection, referenced_slug)
-        written = false
-        name = referenced_name
-      else
-        written = true
-        name = find_page(referenced_collection, referenced_slug).data['name']
-      end
-      {
-        'referent' => referent,
-        'reference' => CollectionDocument.new(
-          name,
-          referenced_collection,
-          referenced_slug,
-          written
-        )
-      }
-    end
-
     # Based on the graph, returns edges that a specific document is the referent of
-    def referenced_in(collection, slug)
+    def referenced_in(doc)
+      collection = doc.collection.label
+      slug = doc.data['slug']
       @graph.select do |edge|
         edge['reference'].collection == collection && edge['reference'].slug == slug
       end.map { |edge| edge['referent'] }
