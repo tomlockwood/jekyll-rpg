@@ -78,6 +78,7 @@ In future I intend that to highlight and be a bit less clunky.
 * Represent relationship between geographical locations in a hierarchical way for easy navigation.
 * Make a DM block filter and clearly highlight DM only content in boxes or similar.
 * Make references table more customizeable and potentially even a template-able thing.
+* Strikethrough on links to collection documents that do not exist
 
 ## Development
 
