@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require 'jekyll'
 require_relative 'spec_helper'
 
 # End-to-end tests via Jekyll
-describe 'Make Jekyll-RPG site' do
+describe 'Make Jekyll-RPG References' do
   let(:site)    { create :site }
 
   context 'with defaults' do
