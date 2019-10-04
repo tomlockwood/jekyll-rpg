@@ -45,15 +45,18 @@ This refs table is generated and appended to the `content` of each `doc` before 
 
 ### DM Mode
 
-At a site config level, you can set `dm_mode` if this is `true`, only then will documents that have `dm: true` be published, and have the pages they refer to shown in the references table of that page.  Additionally, `dm_mode` can be used to hide text that players are not meant to see by wrapping it like this:
+At a site config level, you can set `dm_mode` if this is `true`, only then will documents that have `dm: true` be published, and have the pages they refer to shown in the references table of that page.  Additionally a `dm` block tag can be used to hide text that players are not meant to see by wrapping it like this:
 
 ```
-{% if site.dm_mode %}
+{% dm %}
 Players cannot see this content
-{% endif %}
+{% enddm %}
 ```
 
-In future I intend that to highlight and be a bit less clunky.
+This text is rendered is the site is in `dm_mode` like so:
+
+> # DM Note:
+>> Players cannot see this content
 
 ## New data
 
@@ -76,7 +79,6 @@ In future I intend that to highlight and be a bit less clunky.
 ## Feature roadmap
 
 * Represent relationship between geographical locations in a hierarchical way for easy navigation.
-* Make a DM block filter and clearly highlight DM only content in boxes or similar.
 * Make references table more customizeable and potentially even a template-able thing.
 * Strikethrough on links to collection documents that do not exist
 

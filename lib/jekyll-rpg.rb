@@ -17,7 +17,14 @@ module JekyllRPG
   # DM tag to hide content
   class RenderDMContent < Liquid::Block
     def render(context)
-      super if context.registers[:site].config['dm_mode']
+      text = ''
+      if context.registers[:site].config['dm_mode']
+        text += "> # DM Note: \n"
+        super.each_line do |line|
+          text += '>> ' + line
+        end
+      end
+      text
     end
   end
 end
