@@ -37,7 +37,7 @@ collections:
 
 Or at a site level with `refs: true` in your configuration file.
 
-Each of these options is overridden by the more specific option, so you can choose to show or not show the table on any combination of these levels.
+Each of these options is overridden by the more specific option, so you can choose to show or not show the table on any combination of these levels.  For example, you can choose to render the refs table at the site level, but then not for a particular collection, or for a particular collection but not for one page in that collection.
 
 This refs table is generated and appended to the `content` of each `doc` before it is rendered by jekyll.
 
@@ -60,19 +60,18 @@ This text is rendered is the site is in `dm_mode` like so:
 
 ### On the documents:
 
-`referenced_by` provides a hash of collections with links to pages that refer to the document
+`referenced_by` provides a hash of collections with an array of links in that collection that are pages that refer to the document.
 
 ### On the site:
 
-`graph` is a nested series of hashes that represents the relationship between documents
+`graph` is a nested series of hashes that represents the relationship between documents across the entire site.
 
-`broken_links` is an array of hashes representing a markdown link pointing to a non-existent page
+`broken_links` is an array of hashes representing a markdown link pointing to a non-existent document.
 
 ## Known issues/bug roadmap
 
 * If the first thing on a document is a markdown link, it will not be detected for the `graph` or references.
 * `dm: true` does not prevent selection in collections of a document.
-* Code needs to be better organized into classes.
 
 ## Feature roadmap
 
