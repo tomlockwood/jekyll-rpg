@@ -2,15 +2,13 @@
 
 ## Description
 
-A jekyll plugin to help DMs manage campaign information.
+Jekyll RPG allows storytellers to create wiki-ish static sites to manage homebrew campaign information.  The site is designed to allow DMs to manage their confidential notes alongside a comprehensive guide to the world for the players.
 
-Reads markdown links (for example `[Bethany](/gods/bethany)`) to build a map of relationships between things that are in collections.
+Through the use of markdown links between pages (for example `[Bethany](/gods/bethany)`) Jekyll RPG builds a map of references between documents, allowing DMs and players to see where a document is referenced.  If a player discovers a magic item, and they navigate to the magic item's page, they may see that the item is linked to a document about the session during which it was found, and also the biography of its previous owner.
 
-Writes a table of where a thing is referenced to every thing's page, if desired.  Allows for quick navigation.
+When a DM is creating their world, they might make a markdown link to a document that doesn't exist yet.  When creating a tavern they might link to the as-yet unwritten innkeeper's character page.  Jekyll RPG gives the DM a list of pages they have referenced and unwritten, reminding them of areas of the world they may need to add more detail to.
 
-Generates a list of pages that a link has been made to, but which don't yet exist.  Useful for remembering what needs to be fleshed out.
-
-Allows certain pages marked as only for the DM to not be published, so you can expose a public site to your players!
+Since documents can be marked as DM-eyes-only, it is possible to expose a public site to players.  In this case, DM-only pages will not be shown in the list of links a page has, and they will not be included in the built site.  This makes publishing a safe site for player navigation and consumption easy.
 
 ## Configuration
 
