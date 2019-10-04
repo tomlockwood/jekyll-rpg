@@ -25,6 +25,12 @@ describe 'Make Jekyll-RPG References' do
       ).to eq nil
     end
 
+    it 'does not show references to image links' do
+      expect(
+        site.jekyll.data['broken_links'].map { |edge| edge['reference']['link'] }
+      ).to eq ['[Bruce](/gods/bruce)']
+    end
+
     it 'does not publish DM material' do
       expect(doc_named(site, 'Nega Bruce').data['published']).to eq false
     end
