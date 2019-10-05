@@ -13,6 +13,7 @@ module JekyllRPG
 
     def initialize(site)
       @site = site
+      @dm_mode = @site.config['dm_mode']
       @graph = Graph.new
       @broken_links = []
       @collection_keys = @site.collections.keys - ['posts']
@@ -32,14 +33,21 @@ module JekyllRPG
       collection_documents.each do |doc|
         # Do not publish or reference a page if the site is not in DM Mode
         # And the page is marked as for dms
-        if doc.data['dm'] && !@site.config['dm_mode']
+        if doc.data['dm'] && !@dm_mode
           doc.data['published'] = false
         else
+          unwritten_links = []
           referent = CollectionDocument.new.extract_doc(doc)
           markdown_links(doc).each do |link|
             md_link = MarkdownLink.new(link)
             reference = CollectionDocument.new.extract_markdown(@site, md_link)
+            unwritten_links << reference.markdown_link unless reference.written
             @graph.edges.push(Edge.new(referent, reference))
+          end
+
+          # Unwritten links are struck through
+          unwritten_links.uniq.each do |link|
+            doc.content = doc.content.sub! link, "~~#{link}~~"
           end
         end
       end

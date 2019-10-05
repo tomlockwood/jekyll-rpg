@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
     'lib/edge.rb',
     'lib/graph.rb',
     'lib/jekyll-rpg.rb',
+    'lib/markdown_link.rb',
     'lib/reference_table.rb',
     'lib/references.rb'
   ]

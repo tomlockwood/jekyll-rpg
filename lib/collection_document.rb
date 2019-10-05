@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module JekyllRPG
-  # Represents a document that may be in a Jekyll collection
+  # Represents a document that may be in a Jekyll collection,
+  # extracted from either a document itself, or a markdown
+  # link.
   class CollectionDocument
     attr_accessor :name, :collection, :slug, :written
 
@@ -14,7 +16,6 @@ module JekyllRPG
     end
 
     # extracts link text, collection and slug
-    # [@name](/@collection/@slug)
     def extract_markdown(site, link)
       @collection = link.collection
       @slug = link.slug

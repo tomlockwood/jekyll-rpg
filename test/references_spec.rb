@@ -28,7 +28,10 @@ describe 'Make Jekyll-RPG References' do
     it 'does not show references to image links' do
       expect(
         site.jekyll.data['broken_links'].map { |edge| edge['reference']['link'] }
-      ).to eq ['[Bruce](/gods/bruce)']
+      ).to eq [
+        "[All bethany's faults](/faults/bethany)",
+        '[rise](/history/rise_of_bethany)',
+        '[Bruce](/gods/bruce)']
     end
 
     it 'does not publish DM material' do
