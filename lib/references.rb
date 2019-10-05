@@ -22,7 +22,7 @@ module JekyllRPG
       referent_pass
 
       # Create list of broken links
-      @graph.unwritten.each do |edge|
+      @graph.unviewable.each do |edge|
         @broken_links.push(edge.hash)
       end
     end

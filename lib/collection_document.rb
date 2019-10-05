@@ -5,13 +5,13 @@ module JekyllRPG
   # extracted from either a document itself, or a markdown
   # link.
   class CollectionDocument
-    attr_accessor :name, :collection, :slug, :written
+    attr_accessor :name, :collection, :slug, :viewable
 
     def extract_doc(doc)
       @name = doc.data['name']
       @collection = doc.collection.label
       @slug = doc.data['slug']
-      @written = true
+      @viewable = true
       self
     end
 
@@ -20,8 +20,8 @@ module JekyllRPG
       @site = site
       @collection = link.collection
       @slug = link.slug
-      @written = viewable
-      @name = @written ? find_document.data['name'] : link.name
+      @viewable = viewable
+      @name = @viewable ? find_document.data['name'] : link.name
       self
     end
 
@@ -33,11 +33,6 @@ module JekyllRPG
     # Find a document based on its collection and slug
     def find_document
       @site.collections[@collection].docs.find { |doc| doc.data['slug'] == @slug }
-    end
-
-    # Figure out if the document is clickable or not
-    def clickable
-      @written && viewable
     end
 
     def viewable

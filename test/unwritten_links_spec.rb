@@ -3,7 +3,7 @@
 require_relative 'spec_helper'
 
 # End-to-end tests via Jekyll
-describe 'Unwritten links' do
+describe 'Unviewable links' do
   let(:site)    { create :site, renders: true }
   let(:bethany) { doc_named(site, 'Bethany').content }
   let(:bungus)  { doc_named(site, 'Bungus').content }
