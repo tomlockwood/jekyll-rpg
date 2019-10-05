@@ -37,17 +37,23 @@ module JekyllRPG
         if doc_dm && !@dm_mode
           doc.data['published'] = false
         else
-          unwritten_links = []
+          unviewable_links = []
+          # Extract details of the refereent from it
           referent = CollectionDocument.new.extract_doc(doc)
+
+          # make a reference from each link on the page
           markdown_links(doc).each do |link|
             md_link = MarkdownLink.new(link)
             reference = CollectionDocument.new.extract_markdown(@site, md_link)
-            unwritten_links << reference.markdown_link unless reference.viewable
+
+            # if the reference isn't viewable in the current configuration
+            # append that link to the array of links to strikethrough
+            unviewable_links << reference.markdown_link unless reference.viewable
             @graph.edges.push(Edge.new(referent, reference))
           end
 
-          # Unwritten links are struck through
-          unwritten_links.uniq.each do |link|
+          # Unviewable links are struck through
+          unviewable_links.uniq.each do |link|
             doc.content = doc.content.sub! link, "~~#{link}~~"
           end
         end
