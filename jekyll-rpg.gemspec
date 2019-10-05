@@ -22,8 +22,8 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.required_ruby_version = '>= 2.6.1'
 
-  s.add_dependency 'jekyll', '~> 3'
-  s.add_development_dependency 'factory_bot'
-  s.add_development_dependency 'pry'
-  s.add_development_dependency 'rspec'
+  s.add_dependency 'jekyll', '>= 3', '~> 4.0.0'
+  s.add_development_dependency 'factory_bot', '~> 5.0.2'
+  s.add_development_dependency 'pry', '~> 0.12.2'
+  s.add_development_dependency 'rspec', '~> 3.8.0'
 end
