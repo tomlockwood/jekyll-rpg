@@ -19,5 +19,9 @@ describe 'DM Block Spec' do
     it 'Contain text in DM block' do
       expect(bethany).to include('Jungus')
     end
+
+    it 'Has a heading for the DM Note' do
+      expect(bethany).to include('DM Note')
+    end
   end
 end
