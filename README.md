@@ -43,7 +43,7 @@ This refs table is generated and appended to the `content` of each `doc` before 
 
 ### DM Mode
 
-At a site config level, you can set `dm_mode` if this is `true`, only then will documents that have `dm: true` be published, and have the pages they refer to shown in the references table of that page.  Additionally a `dm` block tag can be used to hide text that players are not meant to see by wrapping it like this:
+At a site config level, you can set `dm_mode` if this is `true`, only then will documents that have `dm: true` be published, and have the pages they refer to shown in the references table of that page.  Links made to those pages will be rendered with a ~~strikethrough~~ as if they do not exist when `dm_mode` is `false`. Additionally a `dm` block tag can be used to hide text that players are not meant to see by wrapping it like this:
 
 ```
 {% dm %}
