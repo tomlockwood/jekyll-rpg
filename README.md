@@ -77,7 +77,6 @@ This text is rendered is the site is in `dm_mode` like so:
 
 * Represent relationship between geographical locations in a hierarchical way for easy navigation.
 * Make references table more customizeable and potentially even a template-able thing.
-* Strikethrough on links to collection documents that do not exist
 * Set pages as `stub`, generate a list of `stub` pages on the site and have a site-configurable option for what the `stub_default` is
 
 ## Development
