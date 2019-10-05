@@ -16,10 +16,10 @@ module JekyllRPG
     # extracts link text, collection and slug
     # [@name](/@collection/@slug)
     def extract_markdown(site, link)
-      @collection = link[%r{(?<=/).*(?=/)}]
-      @slug = link[%r{(?<=/)(?:(?!/).)*?(?=\))}]
+      @collection = link.collection
+      @slug = link.slug
       @written = document_exists(site)
-      @name = @written ? find_document(site).data['name'] : link[/(?<=\[).*?(?=\])/]
+      @name = @written ? find_document(site).data['name'] : link.name
       self
     end
 

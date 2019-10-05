@@ -3,6 +3,7 @@
 require 'collection_document'
 require 'edge'
 require 'graph'
+require 'markdown_link'
 require 'reference_table'
 
 module JekyllRPG
@@ -36,7 +37,8 @@ module JekyllRPG
         else
           referent = CollectionDocument.new.extract_doc(doc)
           markdown_links(doc).each do |link|
-            reference = CollectionDocument.new.extract_markdown(@site, link)
+            md_link = MarkdownLink.new(link)
+            reference = CollectionDocument.new.extract_markdown(@site, md_link)
             @graph.edges.push(Edge.new(referent, reference))
           end
         end
