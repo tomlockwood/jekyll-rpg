@@ -31,7 +31,9 @@ describe 'Make Jekyll-RPG References' do
       ).to eq [
         "[All bethany's faults](/faults/bethany)",
         '[rise](/history/rise_of_bethany)',
-        '[Bruce](/gods/bruce)']
+        '[Nega Bruce](/gods/nega_bruce)',
+        '[Bruce](/gods/bruce)'
+      ]
     end
 
     it 'does not publish DM material' do

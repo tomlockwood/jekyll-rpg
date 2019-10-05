@@ -33,7 +33,8 @@ module JekyllRPG
       collection_documents.each do |doc|
         # Do not publish or reference a page if the site is not in DM Mode
         # And the page is marked as for dms
-        if doc.data['dm'] && !@dm_mode
+        doc_dm = doc.data['dm']
+        if doc_dm && !@dm_mode
           doc.data['published'] = false
         else
           unwritten_links = []
@@ -41,7 +42,7 @@ module JekyllRPG
           markdown_links(doc).each do |link|
             md_link = MarkdownLink.new(link)
             reference = CollectionDocument.new.extract_markdown(@site, md_link)
-            unwritten_links << reference.markdown_link unless reference.written
+            unwritten_links << reference.markdown_link unless reference.viewable
             @graph.edges.push(Edge.new(referent, reference))
           end
 

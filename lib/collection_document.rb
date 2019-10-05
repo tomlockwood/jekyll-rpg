@@ -17,21 +17,33 @@ module JekyllRPG
 
     # extracts link text, collection and slug
     def extract_markdown(site, link)
+      @site = site
       @collection = link.collection
       @slug = link.slug
-      @written = document_exists(site)
-      @name = @written ? find_document(site).data['name'] : link.name
+      @written = viewable
+      @name = @written ? find_document.data['name'] : link.name
       self
     end
 
     # Checks whether document exists in a site
-    def document_exists(site)
-      !site.collections[@collection].nil? && !find_document(site).nil?
+    def document_exists
+      !@site.collections[@collection].nil? && !find_document.nil?
     end
 
     # Find a document based on its collection and slug
-    def find_document(site)
-      site.collections[@collection].docs.find { |doc| doc.data['slug'] == @slug }
+    def find_document
+      @site.collections[@collection].docs.find { |doc| doc.data['slug'] == @slug }
+    end
+
+    # Figure out if the document is clickable or not
+    def clickable
+      @written && viewable
+    end
+
+    def viewable
+      return unless document_exists
+
+      @site.config['dm_mode'] || !find_document.data['dm']
     end
 
     def markdown_link
