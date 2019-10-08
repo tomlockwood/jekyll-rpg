@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module JekyllRPG
-  # Represents a document that may be in a Jekyll collection
+  # A markdown link with components extracted from text
+  # [name](/collection/slug)
   class MarkdownLink
     def initialize(link)
       @link = link
