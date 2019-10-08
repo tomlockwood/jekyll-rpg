@@ -38,7 +38,7 @@ module JekyllRPG
           doc.data['published'] = false
         else
           unviewable_links = []
-          # Extract details of the refereent from it
+          # Extract details of the referent from the document
           referent = CollectionDocument.new.extract_doc(doc)
 
           # make a reference from each link on the page
@@ -49,6 +49,8 @@ module JekyllRPG
             # if the reference isn't viewable in the current configuration
             # append that link to the array of links to strikethrough
             unviewable_links << reference.markdown_link unless reference.viewable
+
+            # Make a new edge on the graph
             @graph.edges.push(Edge.new(referent, reference))
           end
 
