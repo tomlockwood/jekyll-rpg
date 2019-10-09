@@ -2,8 +2,8 @@
 
 Gem::Specification.new do |s|
   s.name        = 'jekyll-rpg'
-  s.version     = '0.0.5'
-  s.date        = '2019-09-20'
+  s.version     = '0.0.6'
+  s.date        = '2019-10-10'
   s.summary     = 'Jekyll plugin for managing RPG information for DMs'
   s.description = ''
   s.authors     = ['Tom Lockwood']
