@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require 'pry'
 require 'bundler'
 Bundler.setup
 
+require 'jekyll'
 require 'factory_bot'
 require 'jekyll-rpg'
 

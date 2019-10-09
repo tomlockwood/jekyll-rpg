@@ -10,7 +10,22 @@ module JekyllRPG
     ref = References.new(site)
 
     site.data['graph'] = ref.graph.hash
-
     site.data['broken_links'] = ref.broken_links
   end
+
+  # DM tag to hide content
+  class RenderDMContent < Liquid::Block
+    def render(context)
+      text = ''
+      if context.registers[:site].config['dm_mode']
+        text += "> # DM Note: \n"
+        super.each_line do |line|
+          text += '>> ' + line
+        end
+      end
+      text
+    end
+  end
 end
+
+Liquid::Template.register_tag('dm', JekyllRPG::RenderDMContent)
