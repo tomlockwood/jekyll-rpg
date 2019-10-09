@@ -7,6 +7,6 @@ FactoryBot.define do
     name       { 'Bethany' }
     collection { 'gods' }
     slug       { 'bethany' }
-    written    { true }
+    viewable { true }
   end
 end

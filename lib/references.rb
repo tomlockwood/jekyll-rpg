@@ -3,6 +3,7 @@
 require 'collection_document'
 require 'edge'
 require 'graph'
+require 'markdown_link'
 require 'reference_table'
 
 module JekyllRPG
@@ -12,6 +13,7 @@ module JekyllRPG
 
     def initialize(site)
       @site = site
+      @dm_mode = @site.config['dm_mode']
       @graph = Graph.new
       @broken_links = []
       @collection_keys = @site.collections.keys - ['posts']
@@ -20,7 +22,7 @@ module JekyllRPG
       referent_pass
 
       # Create list of broken links
-      @graph.unwritten.each do |edge|
+      @graph.unviewable.each do |edge|
         @broken_links.push(edge.hash)
       end
     end
@@ -31,13 +33,30 @@ module JekyllRPG
       collection_documents.each do |doc|
         # Do not publish or reference a page if the site is not in DM Mode
         # And the page is marked as for dms
-        if doc.data['dm'] && !@site.config['dm_mode']
+        doc_dm = doc.data['dm']
+        if doc_dm && !@dm_mode
           doc.data['published'] = false
         else
+          unviewable_links = []
+          # Extract details of the referent from the document
           referent = CollectionDocument.new.extract_doc(doc)
+
+          # make a reference from each link on the page
           markdown_links(doc).each do |link|
-            reference = CollectionDocument.new.extract_markdown(@site, link)
+            md_link = MarkdownLink.new(link)
+            reference = CollectionDocument.new.extract_markdown(@site, md_link)
+
+            # if the reference isn't viewable in the current configuration
+            # append that link to the array of links to strikethrough
+            unviewable_links << reference.markdown_link unless reference.viewable
+
+            # Make a new edge on the graph
             @graph.edges.push(Edge.new(referent, reference))
+          end
+
+          # Unviewable links are struck through
+          unviewable_links.uniq.each do |link|
+            doc.content = doc.content.sub! link, "~~#{link}~~"
           end
         end
       end

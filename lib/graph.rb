@@ -35,9 +35,9 @@ module JekyllRPG
     end
 
     # Based on the graph, returns documents that are referenced, but do not exist yet
-    def unwritten
+    def unviewable
       @edges.reject do |edge|
-        edge.reference.written
+        edge.reference.viewable
       end
     end
 

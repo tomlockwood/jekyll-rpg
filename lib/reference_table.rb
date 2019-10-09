@@ -24,7 +24,7 @@ module JekyllRPG
 
     def refs_table(refs)
       table = <<~TABLE
-        # Referenced By:
+        \n# Referenced By:
         <table>
           <thead>
             <tr>

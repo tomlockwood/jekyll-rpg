@@ -5,6 +5,9 @@ require 'jekyll'
 
 FactoryBot.define do
   factory :site, class: OpenStruct do
+    transient do
+      renders { false }
+    end
     source      { './test/site' }
     destination { './temp' }
     plugins     { ['jekyll-rpg'] }
@@ -28,9 +31,13 @@ FactoryBot.define do
       Jekyll::Site.new(config)
     end
 
-    after(:create) do |site, _|
+    after(:create) do |site, evaluator|
       site.jekyll.reset
       site.jekyll.read
+      if evaluator.renders
+        site.jekyll.generate
+        site.jekyll.render
+      end
     end
   end
 end

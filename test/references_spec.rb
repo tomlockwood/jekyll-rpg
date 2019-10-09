@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require 'jekyll'
 require_relative 'spec_helper'
 
 # End-to-end tests via Jekyll
-describe 'Make Jekyll-RPG site' do
+describe 'Make Jekyll-RPG References' do
   let(:site)    { create :site }
 
   context 'with defaults' do
@@ -24,6 +23,17 @@ describe 'Make Jekyll-RPG site' do
       expect(
         doc_named(site, 'Bethany').data['referenced_by']['gods']
       ).to eq nil
+    end
+
+    it 'does not show references to image links' do
+      expect(
+        site.jekyll.data['broken_links'].map { |edge| edge['reference']['link'] }
+      ).to eq [
+        "[All bethany's faults](/faults/bethany)",
+        '[rise](/history/rise_of_bethany)',
+        '[Nega Bruce](/gods/nega_bruce)',
+        '[Bruce](/gods/bruce)'
+      ]
     end
 
     it 'does not publish DM material' do
