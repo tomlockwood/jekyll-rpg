@@ -7,7 +7,7 @@ require 'markdown_link'
 require 'reference_table'
 
 module JekyllRPG
-  # References within Jekyll Collections
+  # References within documents in Jekyll Collections
   class References
     attr_accessor :collection_keys, :broken_links, :graph
 
@@ -25,6 +25,9 @@ module JekyllRPG
       @graph.unviewable.each do |edge|
         @broken_links.push(edge.hash)
       end
+
+      @site.data['graph'] = @graph.hash
+      @site.data['broken_links'] = @broken_links
     end
 
     # Generating data on how documents reference other documents
@@ -41,7 +44,7 @@ module JekyllRPG
           # Extract details of the referent from the document
           referent = CollectionDocument.new.extract_doc(doc)
 
-          # make a reference from each link on the page
+          # Make a reference from each link on the page
           markdown_links(doc).each do |link|
             md_link = MarkdownLink.new(link)
             reference = CollectionDocument.new.extract_markdown(@site, md_link)
@@ -62,7 +65,7 @@ module JekyllRPG
       end
     end
 
-    # Generating data on how documents are referenced to
+    # Generating data on how each document is referenced
     def referent_pass
       # For each collection page, add where it is referenced
       collection_documents.each do |doc|
@@ -75,15 +78,16 @@ module JekyllRPG
       end
     end
 
+    # Generates a list of documents in collections excluding posts.
     def collection_documents
       @collection_keys.flat_map do |collection|
         @site.collections[collection].docs
       end
     end
 
-    # Find all markdown links in document
+    # Find all markdown links in document.
     # TODO - fails to find markdown link at very start of doc
-    # due to not finding any character that isn't an exclamation mark
+    # due to not finding any character that isn't an exclamation mark.
     def markdown_links(doc)
       doc.to_s.scan(%r{(?<=[^!])\[.*?\]\(/.*?/.*?\)})
     end

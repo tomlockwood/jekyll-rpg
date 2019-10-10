@@ -7,10 +7,7 @@ require_relative 'references'
 module JekyllRPG
   # Bi-directional page links
   Jekyll::Hooks.register :site, :post_read do |site|
-    ref = References.new(site)
-
-    site.data['graph'] = ref.graph.hash
-    site.data['broken_links'] = ref.broken_links
+    References.new(site)
   end
 
   # DM tag to hide content
